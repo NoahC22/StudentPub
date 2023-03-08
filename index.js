@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 
 const PORT = 8080;
 
-const uri = "mongodb+srv://NoahC22:tfdbfm22@cluster0.iwsdnsj.mongodb.net/test"
+const uri = "mongodb+srv://username:password@cluster0.iwsdnsj.mongodb.net/test"
 const client = new MongoClient(uri);
 
 (async function ()
