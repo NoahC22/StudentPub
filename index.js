@@ -51,4 +51,12 @@ app.get('/item', async (req, res) => {
     })
 })
 
+app.get('/home', async (req, res) => {
+    const result = await client.db("StudentPUB").collection("Listings").findOne({ name: "Spoon" });
+    console.log(result)
+    res.render('homepage', {
+        item: result
+    })
+})
+
 app.listen(PORT, () => console.log(`server is listening on port ${PORT}`));
