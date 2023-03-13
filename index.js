@@ -1,3 +1,4 @@
+const { name } = require('ejs');
 const express = require('express');
 const { MongoClient } = require('mongodb');
 
@@ -60,15 +61,5 @@ app.get('/item', async (req, res) => {
         item: result
     })
 })
-
-app.get('/user', async (req, res) => {
-    const result = await client.db("StudentPUB").collection("Users").findOne({ name: "John Doe" });
-    console.log(result)
-    res.render('userpage', {
-        user: result
-    })
-})
-
-
 
 app.listen(PORT, () => console.log(`server is listening on port ${PORT}`));
