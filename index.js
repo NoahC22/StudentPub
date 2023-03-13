@@ -5,7 +5,7 @@ const { MongoClient } = require('mongodb');
 const PORT = 8080;
 
 
-const uri = "mongodb+srv://username:password@cluster0.iwsdnsj.mongodb.net/test"
+const uri = "mongodb+srv://NoFlo:4201331Fn@cluster0.iwsdnsj.mongodb.net/test"
 
 
 
@@ -69,7 +69,7 @@ app.get('/item', async (req, res) => {
 app.get('/user', async (req, res) => {
     const result = await client.db("StudentPUB").collection("Users").findOne({ name: "John Doe" });
     console.log(result)
-    res.render('item_page', {
+    res.render('userpage', {
         item: result
     })
 })
