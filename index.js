@@ -4,7 +4,11 @@ const { MongoClient } = require('mongodb');
 
 const PORT = 8080;
 
+
 const uri = "mongodb+srv://username:password@cluster0.iwsdnsj.mongodb.net/test"
+
+
+
 const client = new MongoClient(uri);
 
 (async function ()
@@ -27,6 +31,16 @@ const client = new MongoClient(uri);
             }
         );
         */
+
+        await insertUser(client, 
+            {
+                img1:"https://jesussavesmbchurch.org/wp-content/themes/grace-church/images/generic-profile.jpg",
+                name: "John Doe",
+                email: "john.doe01@utrgv.edu",
+                reviews: '"The seller is reliable." "The seller delivered the product on time." "The product was in good quality."',
+                
+            }
+        );
 })();
 
 const app = express();
@@ -36,27 +50,18 @@ app.set('view engine', 'ejs');
 
 // Inserting Spoon
 
-/*
-async function insertSpoon(client, newListing){
+
+async function insertUser(client, newListing){
     // See https://mongodb.github.io/node-mongodb-native/3.6/api/Collection.html#insertOne for the insertOne() docs
-    const result = await client.db("StudentPUB").collection("Listings").insertOne(newListing);
+    const result = await client.db("StudentPUB").collection("Users").insertOne(newListing);
     console.log(`New listing created with the following id: ${result.insertedId}`);
 }
-*/
+
 
 app.get('/item', async (req, res) => {
     const result = await client.db("StudentPUB").collection("Listings").findOne({ name: "Spoon" });
     console.log(result)
     res.render('item_page', {
-        item: result
-    })
-})
-
-app.get('/home', async (req, res) => {
-    const result = await client.db("StudentPUB").collection("Listings").findOne({ name: "Spoon" });
-    
-    console.log(result)
-    res.render('homepage', {
         item: result
     })
 })
