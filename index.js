@@ -1,9 +1,10 @@
+const { name } = require('ejs');
 const express = require('express');
 const { MongoClient } = require('mongodb');
 
 const PORT = 8080;
 
-const uri = "mongodb+srv://username:password@cluster0.iwsdnsj.mongodb.net/test"
+const uri = "mongodb+srv://PatricioIZL:tOStLjUjbf7MiIjf@cluster0.iwsdnsj.mongodb.net/test"
 const client = new MongoClient(uri);
 
 (async function ()
@@ -53,6 +54,7 @@ app.get('/item', async (req, res) => {
 
 app.get('/home', async (req, res) => {
     const result = await client.db("StudentPUB").collection("Listings").findOne({ name: "Spoon" });
+    
     console.log(result)
     res.render('homepage', {
         item: result
