@@ -13,7 +13,7 @@
 <div class="container">
 
 <div class="pb-2 mt-4 mb-2 border-bottom">
-	<button type="button" class="btn btn-danger">Back</button>
+  <a href="/view_items" class="button"><button type="button" class="btn btn-danger">Back</button></a>
 </div>
 
 <div class="row">
@@ -22,13 +22,13 @@
         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img src="https://media.cntraveler.com/photos/57212200afc531496352e35e/master/w_2048,h_1536,c_limit/golden-gate-bridge-GettyImages-166267310.jpg" class="d-block w-100 img-fluid">
+                <img src="<%= item.img1 %>" class="d-block w-100 img-fluid">
               </div>
               <div class="carousel-item">
-                <img src="https://infrastructurereportcard.org/wp-content/uploads/2017/01/slidout-bridge-image.jpg" class="d-block w-100 img-fluid">
+                <img src="<%= item.img2 %>" class="d-block w-100 img-fluid">
               </div>
               <div class="carousel-item">
-                <img src="https://dpv85fgkqesen.cloudfront.net/sites/default/files/styles/large_horizontal/public/2018-06/Fairfax_Bridge_crop_0.jpg?itok=9XsU1JDZ" class="d-block w-100 img-fluid" class="d-block w-100 img-fluid">
+                <img src="<%= item.img3 %>" class="d-block w-100 img-fluid">
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -47,32 +47,25 @@
 	</div>
 
 	<div class="col-4">
-        <h1>Bridge</h1>
+        <h1><%= item.name %></h1>
 		<div>Price: $ <%= item.price %></div>
 		<div>Stock: <%= item.qty %></div>
         <div>How Many To Buy:</div>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <select id="droptest">
-                    <option value="0">1</option>
-                    <option value="1">2</option>
-                    <option value="2">3</option>
-                </select>
-            </div>
-        </div>
-        <div>Total $100.00</div>
+        <div class="form-outline" style="width: 22rem;">
+          <input min="1" max="<%= item.qty %>" type="number" id="typeNumber" class="form-control" />
+        </div>      
         <button type="button" class="btn btn-danger">Add To Cart</button>
 	</div>
 
     <div class="col-4">
         <h3>Description:</h3>
         <div>
-            Very good product that is in great condition.
+            <%= item.description %>
         </div>
         
         <h3>Condition:</h3>
         <div>
-            Brand New
+            <%= item.condition %>
         </div>
     </div>
 </div>

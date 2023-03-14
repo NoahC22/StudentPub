@@ -1,6 +1,7 @@
 const { name } = require('ejs');
 const express = require('express');
-const { MongoClient } = require('mongodb');
+//const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const PORT = 8080;
 
@@ -58,13 +59,38 @@ async function insertUser(client, newListing){
 }
 
 
-app.get('/item', async (req, res) => {
-    const result = await client.db("StudentPUB").collection("Listings").findOne({ name: "Spoon" });
-    console.log(result)
+app.get('/item/:ind', async (req, res) => {
+    const ind = req.params['ind']
+    const result = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(ind)})
     res.render('item_page', {
         item: result
     })
 })
+
+app.get('/login', async (req, res) => {
+    res.render('login_page')
+})
+
+app.get('/addoredit', async (req, res) => {
+    res.render('addeditpage')
+})
+
+app.get('/homepage', async (req, res) => {
+    res.render('homepage')
+})
+
+app.get('/view_items', async (req, res) => {
+    const result = await client.db("StudentPUB").collection("Listings").find({}).toArray();
+    res.render('view_own_entries', {
+        itms: result
+    })
+})
+
+app.get('/signup', async (req, res) => {
+    res.render('sign_up')
+})
+
+
 
 app.get('/user', async (req, res) => {
     const result = await client.db("StudentPUB").collection("Users").findOne({ name: "John Doe" });

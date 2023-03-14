@@ -4,11 +4,11 @@
     </head>
     <body>
         <div class="container-fluid">
-  
             <div class="pb-2 mt-4 mb-3">
-              <button type="button" class="btn btn-danger">Back</button>
+              <a href="/view_items" class="button"><button type="button" class="btn btn-danger">Back</button></a>
             </div>
         </div>
+        <form method="POST" action="/addtodb" enctype="multipart/form-data">
         <div class="container-fluid">
             <div class="row mt-5">
                 <div class="col-2">
@@ -18,7 +18,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>Item name</h2></span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" name="itmname">
                       </div>
                       
                 </div>
@@ -31,7 +31,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>Description</h2></span>
                         </div>
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" rows="4" name="itmdesc"></textarea>
                       </div>
                       
                 </div>
@@ -44,7 +44,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>Qty</h2></span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" name="itmqty">
                       </div>
                       
                 </div>
@@ -57,7 +57,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>Condition</h2></span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" name="itmcond">
                       </div>
                       
                 </div>
@@ -70,7 +70,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>Price</h2></span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" name="itmp">
                       </div>
                       
                 </div>
@@ -81,11 +81,10 @@
                 <div class="col-8">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><h2>Images</h2></span>
+                            <span class="input-group-text"><h2>Choose 3 Images</h2></span>
                           </div>
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="inputGroupFile04" multiple>
-                          
+                          <input type="file" class="custom-file-input" id="inputGroupFile04" accept="image/jpeg, image/png, image/jpg" multiple name="itmimg">
                         </div>
                       </div>
                 </div>
@@ -99,10 +98,10 @@
 
                 </div>
                 <div class="col-3 mt-5 pb-3">
-                    <button type="button" class="btn btn-danger">Upload</button>
+                    <button type="submit" class="btn btn-danger">Upload</button>
                 </div>
             </div>
         </div>
-        
+        </form>
     </body>
 </html>

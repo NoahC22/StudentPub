@@ -1,12 +1,26 @@
 {
+  "name": "assn03-server-side-shopping-noahc22",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UTRGV-CS-3342/assn03-server-side-shopping-NoahC22.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UTRGV-CS-3342/assn03-server-side-shopping-NoahC22/issues"
+  },
+  "homepage": "https://github.com/UTRGV-CS-3342/assn03-server-side-shopping-NoahC22#readme",
   "dependencies": {
-<<<<<<< HEAD
-    "ejs": "^3.1.9",
-=======
-    "ehs": "^1.0.3",
     "ejs": "^3.1.8",
->>>>>>> dc43c89527e5e54c20b48d8428d8c27535dd6b54
-    "express": "^4.18.2",
-    "mongodb": "^5.1.0"
+    "express": "^4.18.1",
+    "filereader": "^0.10.3",
+    "mongodb": "^5.1.0",
+    "multer": "^1.4.5-lts.1"
   }
 }
