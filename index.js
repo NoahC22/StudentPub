@@ -78,7 +78,9 @@ app.get('/addoredit', async (req, res) => {
 app.get('/homepage', async (req, res) => {
     res.render('homepage')
 })
-
+app.get('/historypage', async (req, res) => {
+    res.render('historypage')
+})
 app.get('/view_items', async (req, res) => {
     const result = await client.db("StudentPUB").collection("Listings").find({}).toArray();
     res.render('view_own_entries', {
