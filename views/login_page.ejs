@@ -16,20 +16,28 @@
 
     <img src="https://i.ibb.co/HKGB2vr/Student-Pub-logos-transparent.png" class="rounded mx-auto d-block" width="150px" height="150px">
 
+    <form method="POST" action="/loginp">
     <div class="pb-2 mt-4 mb-2">
         <div class="form-group">
           <label for="exampleDropdownFormEmail2">Email address</label>
-          <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
+          <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com" value="<%= locals.username %>" name="logestr">
         </div>
         <div class="form-group">
           <label for="exampleDropdownFormPassword2">Password</label>
-          <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
+          <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password" name="logpstr">
         </div>
     </div>
+
+    <% if (locals.failed) { %>
+      <div class="alert alert-danger" role="alert">
+        Wrong information
+      </div>
+    <% } %>
 
     <div class="pb-2 mt-4 mb-2">
       <button type="submit" class="btn btn-primary">Sign in</button>
     </div>
+    </form>
 </div>
 </body>
 
