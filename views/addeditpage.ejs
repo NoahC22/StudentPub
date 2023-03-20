@@ -9,6 +9,15 @@
             </div>
         </div>
         <form method="POST" action="/addtodb" enctype="multipart/form-data">
+        <% if (locals.errors) { %>
+          <div class="alert alert-danger" role="alert">
+            <ul>
+              <% for (let error of errors) { %>
+                <li><%= error %></li>
+              <% } %>
+            </ul>
+          </div>
+        <% } %>
         <div class="container-fluid">
             <div class="row mt-5">
                 <div class="col-2">
@@ -18,7 +27,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>Item name</h2></span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" name="itmname">
+                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" value="<%= locals.iname %>" name="itmname">
                       </div>
                       
                 </div>
@@ -31,9 +40,8 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>Description</h2></span>
                         </div>
-                        <textarea class="form-control" rows="4" name="itmdesc"></textarea>
+                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" value="<%= locals.idesc %>" name="itmdesc">
                       </div>
-                      
                 </div>
             </div>
             <div class="row mt-5">
@@ -57,7 +65,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>Condition</h2></span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" name="itmcond">
+                        <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" value="<%= locals.icond %>" name="itmcond">
                       </div>
                       
                 </div>
