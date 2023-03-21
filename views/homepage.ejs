@@ -46,54 +46,26 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-4">
-
-            </div>
-            <div class="col-8">
-                <div class="pt-1 mt-1 bg-secondary rounded"></div>
-            </div>
-        </div>
     </div>
 
     <div class="container-fluid mt-2">
         <div class="row align-items-center">
-            <div class="col-4">
-                <div class="card container-fluid">
-                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.bfNh2eUQWIxeSrmq16rzdQHaEJ%26pid%3DApi&f=1&ipt=4fff51f00b859c5bda352f358b2aecb5f79e75d88757fc418c04c58abdd0ccf7&ipo=images" class="card-img-top embed-responsive-item" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Item One</h5>
-                            <p class="card-text">Description</p>
-                            <h6>Filter</h6>
-                            <p class="card-text">Automobile</p>
-                            <a href="#" class="btn btn-danger">Select</a>
-                        </div>
+            <% if (locals.user) { %>
+            <% for (let itm of lists) { %>
+                <div class="col-4">
+                    <div class="card container-fluid">
+                        <img src="<%= itm.img1 %>" class="card-img-top embed-responsive-item" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= itm.name %></h5>
+                                <p class="card-text"><%= itm.description %></p>
+                                <h6><%= itm.condition %></h6>
+                                <p class="card-text">$<%= itm.price %></p>
+                                <a href="#" class="btn btn-danger">Select</a>
+                            </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-4">
-                <div class="card container-fluid">
-                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F4.bp.blogspot.com%2F-KRos1TJhS9M%2FVY4rxNKtjqI%2FAAAAAAAAACc%2FDGYDdUrglTw%2Fs1600%2Fworldcraft.png&f=1&nofb=1&ipt=804760d2d7c56d2a2b7dd98950cf07e2e4ab2cfc6d1618b83c97edafc46ae358&ipo=images" class="card-img-top embed-responsive-item"  alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Item Two</h5>
-                            <p class="card-text">Description</p>
-                            <h6>Filter</h6>
-                            <p class="card-text">Video Game</p>
-                            <a href="#" class="btn btn-danger">Select</a>
-                        </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card container-fluid">
-                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.jdt8VNtyICulU4jtOgoakAHaG5%26pid%3DApi&f=1&ipt=62aadd4bf2fb050e16d8cc156d6ba5713b61626533e3b87c262bd820e1a3c644&ipo=images" class="card-img-top img-fluid embed-responsive-item" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Item Three</h5>
-                            <p class="card-text">Description</p>
-                            <h6>Filter</h6>
-                            <p class="card-text">Technology</p>
-                            <a href="#" class="btn btn-danger">Select</a>
-                        </div>
-                </div>
-            </div>
+            <% } %>
+            <% } %>
         </div>
     </div>
 </body>
