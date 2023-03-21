@@ -119,8 +119,10 @@ app.get('/homepage', async (req, res) => {
 		res.render('homepage')
 	}
 	else {
+        const submissions = await client.db("StudentPUB").collection("Listings").find({}).toArray();
 		res.render('homepage', {
-			user: x
+			user: x,
+            lists: submissions
 		})
 	}
 })
@@ -137,6 +139,11 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
     if((/^[0-9]+/).test(req.body.itmqty) == false) {
         addin = false;
         adderrors.push("Quantity is not a proper integer.")
+    }
+
+    if((/^[0]+$/).test(req.body.itmqty) == true) {
+        addin = false;
+        adderrors.push("Quantity can't be 0.")
     }
 
     if((/^[0-9]+.[0-9][0-9]/).test(req.body.itmp) == false) {
