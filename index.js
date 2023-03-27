@@ -11,6 +11,15 @@ const storage = multer.diskStorage({
       cb(null, file.originalname)
     }
 })
+const storage2 = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './userpfps')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname)
+    }
+})
+const upload2 = multer({storage: storage2})
 const upload = multer({ storage: storage })
 const bcrypt = require('bcryptjs');
 const path = require('path');
@@ -35,6 +44,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'));
 app.use('/uploads', express.static('uploads'));
+app.use('/userpfps', express.static('uploads'));
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(cookieParser());
 app.use(session({secret: 'superSecret', resave: false, saveUninitialized: false}));
@@ -195,33 +205,82 @@ app.get('/logout', (req,res) => {
 //GET ROUTE for user page
 //if not logged in then go back to homepage
 //if so then show them their own information
-app.get('/user', async (req, res) => {
+app.get('/user/:name', async (req, res) => {
 
     let x = req.session.user;
 	if(x == undefined) {
 		res.redirect('homepage')
 	}
 	else {
+        const fname = req.params["name"];
+        const info = await client.db("StudentPUB").collection("Users").findOne({ name: fname})
+        let ifuser = false;
+        if(info.name == req.session.user.name) {
+            ifuser = true;
+        }
 		res.render('userpage', {
-			user: x
+			userinfo: info,
+            ifu: ifuser
 		})
 	}
+})
+
+//POST ROUTE for updating profile picture
+//If no image file then nothing is updated
+//If image gets updated, get info of who ever is signed in then update it by adding a new field
+//That field will have the path to the new image and reflect on the user page
+app.post('/userprf', upload2.single("pfp"), async (req, res) => {
+
+    let pass = true;
+    if(req.file == undefined) {
+        pass = false;
+    }
+    if(pass == true) {
+        console.log(req.file)
+        let ch = { name: req.session.user.name}
+        let new_val = { $set: {imgpath: req.file.path }}
+        await client.db("StudentPUB").collection("Users").updateOne(ch, new_val)
+        res.redirect(`user/${req.session.user.name}`)
+    } else {
+        res.redirect(`/user/${req.session.user.name}`) 
+    }
 })
 
 //GET ROUTE for viewing items
 //if not logged in them kick them to homepage
 //if they are then show them all the entries they have submitted themselves
-app.get('/view_items', async (req, res) => {
+app.get('/view_items/:name', async (req, res) => {
 
     let x = req.session.user;
 	if(x == undefined) {
 		res.redirect('homepage')
 	}
 	else {
-        const result = await client.db("StudentPUB").collection("Listings").find({ user_name: req.session.user.name}).toArray();
+        const vname = req.params["name"];
+        const result = await client.db("StudentPUB").collection("Listings").find({ user_name: vname}).toArray();
+        let suser = false;
+        if(req.session.user.name == vname) {
+            suser = true;
+        }
         res.render('view_own_entries', {
-            itms: result
+            itms: result,
+            showuser: suser
         })
+    }
+})
+
+//GET ROUTE for deleting item from db
+//If not logged in, kicks you out to homepage
+//If logged in and viewing your own items, you can delete them if you don't want them to appear anymore
+//after it deletes, it shows your items again
+app.get('/delete/:ind', async (req, res) => {
+    let x = req.session.user;
+    if (x == undefined) {
+        res.redirect('homepage')
+    } else {
+        const itmid = req.params["ind"];
+        await client.db("StudentPUB").collection("Listings").deleteOne({ _id: new ObjectId(itmid)})
+        res.redirect(`http://localhost:8080/view_items/${req.session.user.name}`)
     }
 })
 
@@ -310,7 +369,7 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
         }
     
         await client.db("StudentPUB").collection("Listings").insertOne(newi);
-        res.redirect(`view_items`)
+        res.redirect(`view_items/${req.session.user.name}`)
     }
 })
 

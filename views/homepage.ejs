@@ -27,10 +27,10 @@
                 <div class="row">
                     <% if (locals.user) { %>
                         <div class="col-2">
-                            <a href="/user" class="button"><button type="button" class="btn btn-danger">My User Page</button></a>
+                            <a href="/user/<%= user.name %>" class="button"><button type="button" class="btn btn-danger">My User Page</button></a>
                         </div>
                         <div class="col-2">
-                            <a href="/view_items" class="button"><button type="button" class="btn btn-danger">My Entries</button></a>
+                            <a href="/view_items/<%= user.name %>" class="button"><button type="button" class="btn btn-danger">My Entries</button></a>
                         </div>
                         <div class="col-2">
                             <a href="/logout" class="button"><button type="button" class="btn btn-danger">Sign Out</button></a>
@@ -54,13 +54,13 @@
             <% for (let itm of lists) { %>
                 <div class="col-4">
                     <div class="card container-fluid">
-                        <img src="<%= itm.img1 %>" class="card-img-top embed-responsive-item">
+                        <img src="http://localhost:8080/<%= itm.img1 %>" class="card-img-top embed-responsive-item">
                             <div class="card-body">
                                 <h5 class="card-title"><%= itm.name %></h5>
                                 <p class="card-text"><%= itm.description %></p>
                                 <h6><%= itm.condition %></h6>
                                 <p class="card-text">$<%= itm.price %></p>
-                                <a href="#" class="btn btn-danger">Select</a>
+                                <a href="/item/<%= itm._id %>" class="btn btn-danger">Select</a>
                             </div>
                     </div>
                 </div>

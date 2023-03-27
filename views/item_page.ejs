@@ -13,7 +13,7 @@
 <div class="container">
 
 <div class="pb-2 mt-4 mb-2 border-bottom">
-  <a href="/view_items" class="button"><button type="button" class="btn btn-danger">Back</button></a>
+  <a href="/homepage" class="button"><button type="button" class="btn btn-danger">Back</button></a>
 </div>
 
 <div class="row">
@@ -22,13 +22,13 @@
         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img src="<%= item.img1 %>" class="d-block w-100">
+                <img src="http://localhost:8080/<%= item.img1 %>" class="d-block w-100">
               </div>
               <div class="carousel-item">
-                <img src="<%= item.img2 %>" class="d-block w-100">
+                <img src="http://localhost:8080/<%= item.img2 %>" class="d-block w-100">
               </div>
               <div class="carousel-item">
-                <img src="<%= item.img3 %>" class="d-block w-100">
+                <img src="http://localhost:8080/<%= item.img3 %>" class="d-block w-100">
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -42,7 +42,7 @@
         </div>
 
         <div style="text-align:center">
-            <a href="/user"><%= item.user_name %></a>
+            <a href="/user/<%= item.user_name %>"><%= item.user_name %></a>
         </div>
 	</div>
 
