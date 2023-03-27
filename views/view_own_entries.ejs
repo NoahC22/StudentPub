@@ -49,22 +49,28 @@
             <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img src="<%= cat.img1 %>" class="d-block w-100">
+                    <img src="http://localhost:8080/<%= cat.img1 %>" class="d-block w-100">
                   </div>
                   <div class="carousel-item">
-                    <img src="<%= cat.img2 %>" class="d-block w-100">
+                    <img src="http://localhost:8080/<%= cat.img2 %>" class="d-block w-100">
                   </div>
                   <div class="carousel-item">
-                    <img src="<%= cat.img3 %>" class="d-block w-100">
+                    <img src="http://localhost:8080/<%= cat.img3 %>" class="d-block w-100">
                   </div>
                 </div>
             </div>
 
         </div>
     
-        <div class="col-2">
-            <a href="/item/<%= cat._id %>"><%= cat.name %></a>
-        </div>
+        <% if(showuser) { %> 
+            <div class="col-2">
+                <%= cat.name %>
+            </div>
+        <% } else { %>
+            <div class="col-2">
+                <a href="/item/<%= cat._id %>"><%= cat.name %></a>
+            </div>
+        <% } %>
 
         <div class="col-2">
             <%= cat.qty %>
@@ -81,12 +87,21 @@
         <div class="col-2">
             <%= cat.condition %>
         </div>
+
+        <% if (showuser) { %>
+            <div class="pb-2 mt-4 mb-2">
+                <a href="/delete/<%= cat._id %>" class="button"><button type="button" class="btn btn-danger">Delete</button></a>
+            </div>
+        <% } %>
     </div>
     <% } %>
 
+    <% if(showuser) { %>
     <div class="pb-2 mt-4 mb-2">
         <a href="/addoredit" class="button"><button type="button" class="btn btn-danger">Add New Entry</button></a>
     </div>
+    <% } else { %>
+    <% } %>
 
 </div>
 
