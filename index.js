@@ -229,7 +229,7 @@ app.get('/user/:name', async (req, res) => {
 //If no image file then nothing is updated
 //If image gets updated, get info of who ever is signed in then update it by adding a new field
 //That field will have the path to the new image and reflect on the user page
-app.post('/userprf', upload2.single("pfp"), async (req, res) => {
+app.post('/userprf', upload.single("pfp"), async (req, res) => {
 
     let pass = true;
     if(req.file == undefined) {
