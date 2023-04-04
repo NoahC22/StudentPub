@@ -11,34 +11,41 @@
 <div class="container">
   
 <div class="pb-2 mt-4 mb-2">
-  <button type="button" class="btn btn-danger">Back</button>
+  <button type="button" class="btn btn-danger">Cancel Order</button>
 </div>
 
-    <div class="row h-100">
-        <div class="col-sm-12 my-auto">
-          
-            <img src="https://jesussavesmbchurch.org/wp-content/themes/grace-church/images/generic-profile.jpg" class="mx-auto d-block">
+<h1 style="text-align: center">Order Information</h1>
             
-            <div class="text-center"><p>John Doe</p></div>
-            <div class="text-center"><p>john.doe01@utrgv.edu</p></div>
-            <div class="text-center"><p>956 123 4567</p></div>
-            <div class="text-center"><p> Please use the provided contact information to contact the seller.</p></div>
-            
-            
-             
-             
-            
-          
-            
-            
-          
-        </div>
+<div class="row" style="display: flex; justify-content: center; align-items: center;">
+    <div>
+        <img src="http://localhost:8080/<%= iteminfo.img1 %>" style="height: 200px; width: 200px;">
     </div>
+    <div>
+        <img src="http://localhost:8080/<%= iteminfo.img2 %>" style="height: 200px; width: 200px;">
+    </div>
+    <div>
+        <img src="http://localhost:8080/<%= iteminfo.img3 %>" style="height: 200px; width: 200px;">
+    </div>
+</div>
+
+<div class="border-bottom">
+    <p style="text-align: center">Item Name: <%= iteminfo.name %></p>
+    <p style="text-align: center">Item Description: <%= iteminfo.description %></p>
+    <p style="text-align: center">Item Condition: <%= iteminfo.condition %></p>
+    <p style="text-align: center">Item Holder: <%= iteminfo.user_email %></p>
+</div>
+
+<div>
+    <p style="text-align: center">Quantity: <%= orderinfo.qty %></p>
+    <p style="text-align: center">Recipient: <%= orderinfo.buyer %></p>
+    <h5 style="text-align: center">Total: <%= orderinfo.total %></h5>
+</div>
+
+<div style="text-align: center;">
+    <button type="button" class="btn btn-danger">Buy</button>
+</div>
  
     
 </div>
-
-</div>
-
 </body>
 </html>

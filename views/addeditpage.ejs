@@ -4,9 +4,9 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="pb-2 mt-4 mb-3">
-              <a href="/view_items" class="button"><button type="button" class="btn btn-danger">Back</button></a>
-            </div>
+          <div class="pb-2 mt-4 mb-3">
+            <a href="/view_items/<%= user.email %>" class="button"><button type="button" class="btn btn-danger">Back</button></a>
+          </div>   
         </div>
         <form method="POST" action="/addtodb" enctype="multipart/form-data">
         <% if (locals.errors) { %>

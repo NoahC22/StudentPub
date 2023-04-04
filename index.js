@@ -213,9 +213,9 @@ app.get('/user/:name', async (req, res) => {
 	}
 	else {
         const fname = req.params["name"];
-        const info = await client.db("StudentPUB").collection("Users").findOne({ name: fname})
+        const info = await client.db("StudentPUB").collection("Users").findOne({ email: fname})
         let ifuser = false;
-        if(info.name == req.session.user.name) {
+        if(info.email == req.session.user.email) {
             ifuser = true;
         }
 		res.render('userpage', {
@@ -236,13 +236,12 @@ app.post('/userprf', upload.single("pfp"), async (req, res) => {
         pass = false;
     }
     if(pass == true) {
-        console.log(req.file)
-        let ch = { name: req.session.user.name}
+        let ch = { email: req.session.user.email}
         let new_val = { $set: {imgpath: req.file.path }}
         await client.db("StudentPUB").collection("Users").updateOne(ch, new_val)
-        res.redirect(`user/${req.session.user.name}`)
+        res.redirect(`user/${req.session.user.email}`)
     } else {
-        res.redirect(`/user/${req.session.user.name}`) 
+        res.redirect(`/user/${req.session.user.email}`) 
     }
 })
 
@@ -257,9 +256,9 @@ app.get('/view_items/:name', async (req, res) => {
 	}
 	else {
         const vname = req.params["name"];
-        const result = await client.db("StudentPUB").collection("Listings").find({ user_name: vname}).toArray();
+        const result = await client.db("StudentPUB").collection("Listings").find({ user_email: vname}).toArray();
         let suser = false;
-        if(req.session.user.name == vname) {
+        if(req.session.user.email == vname) {
             suser = true;
         }
         res.render('view_own_entries', {
@@ -280,7 +279,7 @@ app.get('/delete/:ind', async (req, res) => {
     } else {
         const itmid = req.params["ind"];
         await client.db("StudentPUB").collection("Listings").deleteOne({ _id: new ObjectId(itmid)})
-        res.redirect(`http://localhost:8080/view_items/${req.session.user.name}`)
+        res.redirect(`http://localhost:8080/view_items/${req.session.user.email}`)
     }
 })
 
@@ -294,7 +293,9 @@ app.get('/addoredit', async (req, res) => {
 		res.redirect('homepage')
 	}
 	else {
-        res.render('addeditpage')
+        res.render('addeditpage', {
+            user: x
+        })
 	}
 
 })
@@ -306,9 +307,9 @@ app.get('/addoredit', async (req, res) => {
 //for price, check if it can be a valid float format and if not, dont let them submit and leave a warning
 //for quantity check if it can be a integer, if not leave a warning
 //adds name to to the item so it knows who just submitted an item
-//IMAGE NEEDS TO BE FIXED, doesn't work that well
 app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
 
+    let x = req.session.user;
     const adderrors = []
     let addin = true;
     let itmname = String(req.body.itmname)
@@ -345,7 +346,8 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
             errors: adderrors,
             iname: itmname,
             idesc: itmdesc,
-            icond: itmcond
+            icond: itmcond,
+            user: x
         })
     } else {
 
@@ -357,7 +359,7 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
         let itmp = parseFloat(req.body.itmp)
 
         let newi = {
-            user_name: req.session.user.name,
+            user_email: req.session.user.email,
             name: itmname,
             description: itmdesc,
             qty: itmqty,
@@ -369,7 +371,7 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
         }
     
         await client.db("StudentPUB").collection("Listings").insertOne(newi);
-        res.redirect(`view_items/${req.session.user.name}`)
+        res.redirect(`view_items/${req.session.user.email}`)
     }
 })
 
@@ -377,6 +379,7 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
 //GET ROUTE for viewing single item
 //if not logged in, go to homepage
 //if logged in, take the ID of whatever is being clicked and load the information onto the item_page.ejs
+//Now the logged in user can't buy their own items and can only buy other people's items
 app.get('/item/:ind', async (req, res) => {
 
     let x = req.session.user;
@@ -385,11 +388,67 @@ app.get('/item/:ind', async (req, res) => {
 	}
 	else {
         const ind = req.params['ind']
+        let shuser = true;
         const result = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(ind)})
+        if(req.session.user.email == result.user_email) {
+            shuser = false;
+        }
         res.render('item_page', {
-            item: result
+            item: result,
+            showuser: shuser
         })
     }
+})
+
+//POST ROUTE for ordering item
+//checks if its blank, if it is then reload to same page
+//if not, then make a new order and keep information
+app.post('/orderitem/:ind', async (req, res) => {
+    const ind = req.params['ind'];
+    let qtyval = req.body.qtyctrl
+
+    if(qtyval == "") {
+        res.redirect(`/item/${ind}`)
+    } else {
+        const inf = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(ind)})
+        let fp = qtyval * inf.price
+
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+          
+        fp = formatter.format(fp)
+
+        let neword = {
+            itmname: inf.name,
+            itmholder: inf.user_email,
+            buyer: req.session.user.email,
+            qty: parseInt(qtyval),
+            itm_id: ind,
+            total: fp
+        }
+        const rd = await client.db("StudentPUB").collection("Orders").insertOne(neword)
+        res.redirect(`/transaction/${rd.insertedId}`)
+    }
+})
+
+
+//GET ROUTE for transactions
+//Will show information about item and total
+app.get('/transaction/:ind', async (req, res) => {
+    const ind = req.params["ind"];
+
+    const oinfo = await client.db("StudentPUB").collection("Orders").findOne({ _id: new ObjectId(ind)})
+    const itminfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId( oinfo.itm_id)})
+
+    console.log(oinfo)
+    console.log(itminfo)
+
+    res.render('transaction', {
+        iteminfo: itminfo,
+        orderinfo: oinfo
+    })
 })
 
 //For any link that is not listed above
@@ -397,5 +456,6 @@ app.get('/item/:ind', async (req, res) => {
 app.all('*', (req, res) => {
     res.sendStatus(404);
 });
+
 
 app.listen(PORT, () => console.log(`server is listening on port ${PORT}`));

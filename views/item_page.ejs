@@ -42,19 +42,23 @@
         </div>
 
         <div style="text-align:center">
-            <a href="/user/<%= item.user_name %>"><%= item.user_name %></a>
+            <a href="/user/<%= item.user_email %>"><%= item.user_email %></a>
         </div>
 	</div>
 
 	<div class="col-4">
+    <form method="POST" action="/orderitem/<%= item._id %>">
         <h1><%= item.name %></h1>
-		<div>Price: $ <%= item.price %></div>
-		<div>Stock: <%= item.qty %></div>
+		    <div>Price: $ <%= item.price %></div>
+		    <div>Stock: <%= item.qty %></div>
+        <% if (showuser) {%>
         <div>How Many To Buy:</div>
         <div class="form-outline" style="width: 22rem;">
-          <input min="1" max="<%= item.qty %>" type="number" id="typeNumber" class="form-control" />
+          <input min="1" max="<%= item.qty %>" type="number" id="typeNumber" class="form-control" name="qtyctrl"/>
         </div>      
-        <button type="button" class="btn btn-danger">Add To Cart</button>
+        <button type="submit" class="btn btn-danger">Buy</button>
+        <% } %>
+    </form>
 	</div>
 
     <div class="col-4">
