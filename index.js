@@ -68,6 +68,13 @@ app.get('/homepage', async (req, res) => {
 	}
 })
 
+app.post('/home_search', async (req, res) => {
+    let x = req.body.search
+    x = x.toLowerCase()
+    let info = await client.db("StudentPUB").collection("Listings").find({ dname: {$regex: x}}).toArray();
+    res.json(info)
+})
+
 //GET ROUTE For signup
 //check if user is logged in, if not then let them go to sign up page
 //if they are then just go back to homepage
@@ -278,8 +285,13 @@ app.get('/delete/:ind', async (req, res) => {
         res.redirect('homepage')
     } else {
         const itmid = req.params["ind"];
-        await client.db("StudentPUB").collection("Listings").deleteOne({ _id: new ObjectId(itmid)})
-        res.redirect(`http://localhost:8080/view_items/${req.session.user.email}`)
+        const cinfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(itmid)})
+        if(cinfo.user_email == req.session.user.email) {
+            await client.db("StudentPUB").collection("Listings").deleteOne({ _id: new ObjectId(itmid)})
+            res.redirect(`http://localhost:8080/view_items/${req.session.user.email}`)
+        } else {
+            res.redirect('homepage')
+        }
     }
 })
 
@@ -360,6 +372,7 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
 
         let newi = {
             user_email: req.session.user.email,
+            dname: itmname.toLowerCase(),
             name: itmname,
             description: itmdesc,
             qty: itmqty,
@@ -442,14 +455,32 @@ app.get('/transaction/:ind', async (req, res) => {
     const oinfo = await client.db("StudentPUB").collection("Orders").findOne({ _id: new ObjectId(ind)})
     const itminfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId( oinfo.itm_id)})
 
-    console.log(oinfo)
-    console.log(itminfo)
-
     res.render('transaction', {
         iteminfo: itminfo,
         orderinfo: oinfo
     })
 })
+
+//GET ROUTE for deleting order transaction
+//IF you are not buying the right items or want to change, then you can click cancel order
+//deletes the order and brings you back to the item you were viewing
+app.get('/orderdelete/:ind', async (req, res) => {
+    let x = req.session.user;
+    if (x == undefined) {
+        res.redirect('homepage')
+    } else {
+        const ordid = req.params["ind"];
+        const oinfo = await client.db("StudentPUB").collection("Orders").findOne({ _id: new ObjectId(ordid)})
+        const iinfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(oinfo.itm_id)})
+        if(oinfo.buyer == req.session.user.email) {
+            await client.db("StudentPUB").collection("Orders").deleteOne({ _id: new ObjectId(ordid)})
+            res.redirect(`http://localhost:8080/item/${iinfo._id}`)
+        } else {
+            res.redirect('homepage')
+        }
+    }
+})
+
 
 //For any link that is not listed above
 //sends 404 message
