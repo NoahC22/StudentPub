@@ -20,9 +20,11 @@
 
     <div class="container-fluid mt-5">
         <div class="row">
+            <% if (locals.user) { %>
             <div class="col-4">
-                <input class="form-control" list="..." id="..." placeholder="Search">
+                <input class="form-control" list="..." id="searchBar" placeholder="Search">
             </div>
+            <% } %>
             <div class="col-8 container-fluid">
                 <div class="row">
                     <% if (locals.user) { %>
@@ -49,7 +51,7 @@
     </div>
 
     <div class="container-fluid mt-2">
-        <div class="row align-items-center">
+        <div class="row align-items-center" id="alist">
             <% if (locals.user) { %>
             <% for (let itm of lists) { %>
                 <div class="col-4">
@@ -68,6 +70,41 @@
             <% } %>
         </div>
     </div>
+    <script>
+        ( async () => {
+            let list = document.getElementById('alist')
+            let clear = () => {
+                list.innerHTML = ""
+            }
+            document.getElementById('searchBar').addEventListener('input', async (e) => {
+                let result = await fetch('/home_search', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        search: document.getElementById('searchBar').value
+                    })
+                })
+                data = await result.json();
+                clear()
+                for (let item of data) {
+                    list.innerHTML += `<div class="col-4">
+                    <div class="card container-fluid">
+                        <img src="http://localhost:8080/${item.img1}" class="card-img-top embed-responsive-item">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.name}</h5>
+                                <p class="card-text">${item.description}</p>
+                                <h6>${item.condition}</h6>
+                                <p class="card-text">$${item.price}</p>
+                                <a href="/item/${item._id}" class="btn btn-danger">Select</a>
+                            </div>
+                    </div>
+                </div>`
+                }
+            })
+        })()
+    </script>
 </body>
 
 </html>
