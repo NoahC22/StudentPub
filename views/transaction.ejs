@@ -41,9 +41,11 @@
     <h5 style="text-align: center">Total: <%= orderinfo.total %></h5>
 </div>
 
+<form method="POST" action="/orderup/<%= orderinfo._id %>">
 <div style="text-align: center;">
-    <button type="button" class="btn btn-danger">Buy</button>
+    <button type="submit" class="btn btn-danger">Buy</button>
 </div>
+</form>
  
     
 </div>

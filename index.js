@@ -60,7 +60,7 @@ app.get('/homepage', async (req, res) => {
 		res.render('homepage')
 	}
 	else {
-        const submissions = await client.db("StudentPUB").collection("Listings").find({}).toArray();
+        let submissions = await client.db("StudentPUB").collection("Listings").find({}).toArray();
 		res.render('homepage', {
 			user: x,
             lists: submissions
@@ -68,6 +68,11 @@ app.get('/homepage', async (req, res) => {
 	}
 })
 
+
+//POST ROUTE For search bar functionality
+//Gets whatever the user typed in the search bar and takes in the information
+//It then goes into the collection of listings and find uses regex to see if whatever the user typed matches the item's name
+//if so, print out that information
 app.post('/home_search', async (req, res) => {
     let x = req.body.search
     x = x.toLowerCase()
@@ -450,15 +455,24 @@ app.post('/orderitem/:ind', async (req, res) => {
 //GET ROUTE for transactions
 //Will show information about item and total
 app.get('/transaction/:ind', async (req, res) => {
-    const ind = req.params["ind"];
+    let x = req.session.user
+    if (x == undefined) {
+        res.redirect('homepage')
+    } else {
+        const ind = req.params["ind"];
 
-    const oinfo = await client.db("StudentPUB").collection("Orders").findOne({ _id: new ObjectId(ind)})
-    const itminfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId( oinfo.itm_id)})
+        const oinfo = await client.db("StudentPUB").collection("Orders").findOne({ _id: new ObjectId(ind)})
+        const itminfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId( oinfo.itm_id)})
 
-    res.render('transaction', {
-        iteminfo: itminfo,
-        orderinfo: oinfo
-    })
+        if(oinfo.buyer == req.session.user.email) {
+            res.render('transaction', {
+                iteminfo: itminfo,
+                orderinfo: oinfo
+            })
+        } else {
+            res.redirect('homepage')
+        }
+    }
 })
 
 //GET ROUTE for deleting order transaction
@@ -481,10 +495,73 @@ app.get('/orderdelete/:ind', async (req, res) => {
     }
 })
 
+//POST ROUTE for buying item
+//Gets the order and item information and gets the new quantity
+//after getting that, it then changes the items quantity since some of it is being bought
+//it then goes to check if it can delete it
+app.post('/orderup/:ind', async (req, res) => {
+    const ind = req.params["ind"]
+    const oinfo = await client.db("StudentPUB").collection("Orders").findOne({ _id: new ObjectId(ind)})
+    const iinfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(oinfo.itm_id)})
+        
+    let new_qty = iinfo.qty - oinfo.qty
+
+    let chi = { _id: new ObjectId(oinfo.itm_id)}
+    let new_val = { $set: {qty: new_qty }}
+    await client.db("StudentPUB").collection("Listings").updateOne(chi, new_val)
+
+    res.redirect(`/checkfordelete/${oinfo.itmholder}`)    
+})
+
+//GET ROUTE to check for deleting item
+//after buying an item it goes here to see if the quantity is 0
+//if it is, delete it, if not return home
+app.get('/checkfordelete/:hold', async (req, res) => {
+    const holder = req.params["hold"]
+    let x = req.session.user
+    if(x == undefined) {
+        res.redirect('homepage')
+    } else {
+        await client.db("StudentPUB").collection("Listings").deleteMany({ qty: 0})
+        res.redirect(`/thankyou/${holder}`)
+    }
+})
+
+
+//GET ROUTE for thank you message
+//Tells the user a thank you message and information of the item holder
+//Either go back to homepage or back to user page to leave a review
+app.get('/thankyou/:hold', async (req, res) => {
+    let x = req.session.user
+    const hold = req.params["hold"]
+    if( x == undefined) {
+        res.redirect('homepage')
+    } else {
+        const info = await client.db("StudentPUB").collection("Users").findOne({ email: hold})
+        res.render('thankyoupage', {
+            user: info
+        })
+    }
+})
+
+//GET ROUTE for history
+//clicking it views the list of past orders that were made by the user
+app.get('/history', async (req, res) => {
+    let x = req.session.user
+    if(x == undefined) {
+        res.redirect('homepage')
+    } else {
+        const oinfo = await client.db("StudentPUB").collection("Orders").find({ buyer: req.session.user.email}).toArray()
+        res.render('historypage', {
+            orders: oinfo
+        })
+    }
+})
+
 
 //For any link that is not listed above
 //sends 404 message
-app.all('*', (req, res) => {
+app.all('*', async (req, res) => {
     res.sendStatus(404);
 });
 

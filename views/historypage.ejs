@@ -12,12 +12,12 @@
 <div class="container">
 
     <div class="pb-2 mt-4 mb-2">
-        <button type="button" class="btn btn-danger">Back</button>
+        <a href="/homepage" class="button"><button type="button" class="btn btn-danger">Back</button></a>
     </div>
 
     <div class="row border-bottom">
         <div class="col-2">
-            Image
+            Holder
         </div>
 
         <div class="col-2">
@@ -29,211 +29,37 @@
         </div>
 
         <div class="col-2">
-            Price
+            Total
+        </div>
+
+        <div class="col-2">
+            QTY
         </div>
     </div>
 
+    <% for (let o of orders) {%>
     <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
+        <div class="col-2" style="white-space: normal; word-wrap: break-word;">
+            <%= o.itmholder %>
         </div>
 
-        <div class="col-2">
-            Pencil
+        <div class="col-2" style="white-space: normal; word-wrap: break-word;">
+            <%= o.itmname %>
         </div>
 
-        <div class="col-2">
-            12345
+        <div class="col-2" style="white-space: normal; word-wrap: break-word;">
+            <%= o.itm_id %>
         </div>
 
-        <div class="col-2">
-            $5.00
+        <div class="col-2" style="white-space: normal; word-wrap: break-word;">
+            <%= o.total %>
+        </div>
+
+        <div class="col-2" style="white-space: normal; word-wrap: break-word;">
+            <%= o.qty %>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <img class="img-fluid" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220318135445-01-canakkale-bridge-turkey.jpg">
-        </div>
-
-        <div class="col-2">
-            Spoon
-        </div>
-
-        <div class="col-2">
-            56789
-        </div>
-
-        <div class="col-2">
-            $10.00
-        </div>
-    </div>
-    
-    <div class="row mt-2 mb-2">
-        <div class="col-2">
-            <button type="button" class="btn btn-danger">Prev</button>
-        </div>
-
-        <div class="col-2">
-            
-        </div>
-
-        <div class="col-2">
-            
-        </div>
-
-        <div class="col-2">
-            <button type="button" class="btn btn-danger">Next</button> 
-        </div>
-    </div>
-
-    
-        
-         
-    
-    
-    
-          
-            
-    
-     
-
+    <% } %>
 </div>
 
 </body>
