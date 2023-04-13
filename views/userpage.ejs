@@ -44,9 +44,43 @@
             </div> 
             
           
+            <div class="row my-4 justify-content-center">
+              <div class="col-8">
+                <h3>Reviews</h3>
+            
+                <% if(!ifu) { %>
+                <div class="card w-100 mt-3">
+                  <div class="card-body">
+                    <form method="POST" action="/review/<%= userinfo.email %>">
+                      <div class="form-group">
+                        <label>Add your review!</label>
+                       </div>
+                       <div class="form-group">
+                        <textarea class="form-control mb-1" placeholder="Review" name="sentence"></textarea>
+                       </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <% } %>
+            
+              <% for(let r of reviews) { %>
+                <div class="card w-100 mt-3">
+                  <div class="card-header">
+                    <em><%= r.author %></em>
+                  </div>
+                  <div class="card-body">
+                    <p><%= r.msg %></p>
+                  </div>
+                </div>
+              <% } %>
+            
+              </div>
+            </div>
             
             
-          
         </div>
     </div>
    
