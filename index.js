@@ -225,6 +225,7 @@ app.get('/user/:name', async (req, res) => {
 	}
 	else {
         const fname = req.params["name"];
+        const rev = await client.db("StudentPUB").collection("Reviews").find({ receiver: fname}).toArray()
         const info = await client.db("StudentPUB").collection("Users").findOne({ email: fname})
         let ifuser = false;
         if(info.email == req.session.user.email) {
@@ -232,7 +233,8 @@ app.get('/user/:name', async (req, res) => {
         }
 		res.render('userpage', {
 			userinfo: info,
-            ifu: ifuser
+            ifu: ifuser,
+            reviews: rev
 		})
 	}
 })
@@ -255,6 +257,30 @@ app.post('/userprf', upload.single("pfp"), async (req, res) => {
     } else {
         res.redirect(`/user/${req.session.user.email}`) 
     }
+})
+
+//POST ROUTE for adding review
+//Gets the message and the person who is getting the review
+//If the message is empty, don't add anything
+//If its not, make a new Review with the message, author, and receiver
+app.post('/review/:name', async (req, res) => {
+    const email = req.params["name"]
+    let sent = req.body.sentence;
+
+    if(!sent.trim()) {
+        res.redirect(`/user/${email}`)
+    } else {
+
+        let newi = {
+            msg: sent,
+            author: req.session.user.email,
+            receiver: email
+        }
+        await client.db("StudentPUB").collection("Reviews").insertOne(newi)
+
+        res.redirect(`/user/${email}`)
+    }
+
 })
 
 //GET ROUTE for viewing items
