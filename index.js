@@ -49,6 +49,9 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(cookieParser());
 app.use(session({secret: 'superSecret', resave: false, saveUninitialized: false}));
 
+app.get('/', async (req, res) => {
+    res.redirect('/homepage')
+})
 
 //GET ROUTE for homepage
 //If not logged in then show them the regular homepage but with nothing really showing
@@ -271,16 +274,54 @@ app.post('/review/:name', async (req, res) => {
         res.redirect(`/user/${email}`)
     } else {
 
+        let date = new Date()
+        let day = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+        let time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        let dates = day + ' ' + time
+
         let newi = {
             msg: sent,
             author: req.session.user.email,
-            receiver: email
+            receiver: email,
+            dt: dates,
+            comments: []
         }
         await client.db("StudentPUB").collection("Reviews").insertOne(newi)
 
         res.redirect(`/user/${email}`)
     }
 
+})
+
+app.post('/comment/:id', async (req, res) => {
+    const ind = req.params["id"]
+    let sent = req.body.csentence
+    
+    let info = await client.db("StudentPUB").collection("Reviews").findOne({ _id: new ObjectId(ind)})
+
+    if(!sent.trim()) {
+        res.redirect(`/user/${info.receiver}`)
+    } else {
+
+        let date = new Date()
+        let day = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+        let time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        let dates = day + ' ' + time
+
+        let newi = {
+            cmsg: sent,
+            cauthor: req.session.user.email,
+            cdt: dates,
+            creceiver: info.receiver,
+            reviewid: ind
+        }
+
+        let chi = { _id: new ObjectId(ind)}
+        let new_val = { $push: { comments: newi }}
+        await client.db("StudentPUB").collection("Reviews").updateOne(chi, new_val)
+
+        res.redirect(`/user/${info.receiver}`)
+    }
 })
 
 //GET ROUTE for viewing items
@@ -470,7 +511,8 @@ app.post('/orderitem/:ind', async (req, res) => {
             buyer: req.session.user.email,
             qty: parseInt(qtyval),
             itm_id: ind,
-            total: fp
+            total: fp,
+            status: "Pending"
         }
         const rd = await client.db("StudentPUB").collection("Orders").insertOne(neword)
         res.redirect(`/transaction/${rd.insertedId}`)
@@ -529,6 +571,14 @@ app.post('/orderup/:ind', async (req, res) => {
     const ind = req.params["ind"]
     const oinfo = await client.db("StudentPUB").collection("Orders").findOne({ _id: new ObjectId(ind)})
     const iinfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(oinfo.itm_id)})
+
+    if(iinfo == null || iinfo == undefined) {
+        let c = { $set: {status: "Item Out of Stock"}}
+        await client.db("StudentPUB").collection("Orders").updateOne(oinfo, c)
+        res.redirect('/homepage')
+    } else {
+
+    
         
     let new_qty = iinfo.qty - oinfo.qty
 
@@ -536,7 +586,12 @@ app.post('/orderup/:ind', async (req, res) => {
     let new_val = { $set: {qty: new_qty }}
     await client.db("StudentPUB").collection("Listings").updateOne(chi, new_val)
 
-    res.redirect(`/checkfordelete/${oinfo.itmholder}`)    
+    let api = { _id: new ObjectId(ind)}
+    let ns = { $set: {status: "Approved"}}
+    await client.db("StudentPUB").collection("Orders").updateOne(api, ns)
+
+    res.redirect(`/checkfordelete/${oinfo.buyer}`)    
+    }
 })
 
 //GET ROUTE to check for deleting item
@@ -581,6 +636,69 @@ app.get('/history', async (req, res) => {
         res.render('historypage', {
             orders: oinfo
         })
+    }
+})
+
+app.get('/placedorders', async (req, res) => {
+    let x = req.session.user
+    if (x == undefined) {
+        res.redirect('homepage')
+    } else {
+        let i = {
+            status: "Pending",
+            buyer: req.session.user.email
+        }
+        const info = await client.db("StudentPUB").collection("Orders").find(i).toArray();
+        res.render('pendorders', {
+            yorders: info
+        })
+    }
+})
+
+app.get('/cancelorder/:ind', async (req, res) => {
+    let x = req.session.user
+    if(x==undefined) {
+        res.redirect('homepage')
+    } else {
+ 
+        const ind = req.params["ind"]
+        let ch = { _id: new ObjectId(ind)}
+        let new_val = { $set: {status: "Canceled" }}
+        await client.db("StudentPUB").collection("Orders").updateOne(ch, new_val)
+
+        res.redirect('/placedorders')
+    }
+})
+
+app.get('/incorders', async (req, res) => {
+    let x = req.session.user
+    if(x == undefined) {
+        res.redirect('homepage')
+    } else {
+        let i = {
+            status: "Pending",
+            itmholder: req.session.user.email
+        }
+
+        const info = await client.db("StudentPUB").collection("Orders").find(i).toArray()
+        res.render('incomingorders', {
+            incorders: info
+        })
+    }
+})
+
+app.get('/decline/:ind', async (req, res) => {
+    let x = req.session.user
+    if(x==undefined) {
+        res.redirect('homepage')
+    } else {
+ 
+        const ind = req.params["ind"]
+        let ch = { _id: new ObjectId(ind)}
+        let new_val = { $set: {status: "Declined" }}
+        await client.db("StudentPUB").collection("Orders").updateOne(ch, new_val)
+
+        res.redirect('/incorders')
     }
 })
 

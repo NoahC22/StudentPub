@@ -15,6 +15,8 @@
         <a href="/homepage" class="button"><button type="button" class="btn btn-danger">Back</button></a>
     </div>
 
+    <h4>List Of Orders That You Have Made and Their Statuses</h4>
+
     <div class="row border-bottom">
         <div class="col-2">
             Holder
@@ -35,9 +37,14 @@
         <div class="col-2">
             QTY
         </div>
+
+        <div class="col-2">
+            Status
+        </div>
     </div>
 
     <% for (let o of orders) {%>
+    <% if(o.status != "Pending") { %>
     <div class="row">
         <div class="col-2" style="white-space: normal; word-wrap: break-word;">
             <%= o.itmholder %>
@@ -48,7 +55,7 @@
         </div>
 
         <div class="col-2" style="white-space: normal; word-wrap: break-word;">
-            <%= o.itm_id %>
+            <%= o._id %>
         </div>
 
         <div class="col-2" style="white-space: normal; word-wrap: break-word;">
@@ -58,7 +65,12 @@
         <div class="col-2" style="white-space: normal; word-wrap: break-word;">
             <%= o.qty %>
         </div>
+
+        <div class="col-2" style="white-space: normal; word-wrap: break-word;">
+            <%= o.status %>
+        </div>
     </div>
+    <% } %>
     <% } %>
 </div>
 

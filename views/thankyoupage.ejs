@@ -16,7 +16,7 @@
 
             
             <div class="text-center">
-                <p>Thank you for your purchase!</p>
+                <p>Order Approved!</p>
             </div>
             
             <% if(user.imgpath == null) {%>
@@ -30,12 +30,8 @@
             </div>
             <div class="text-center"><p><%= user.name %></p></div>
             <div class="text-center"><p><%= user.email %></p></div>
-            <div class="text-center">
-                <p>Please go to their page to leave a review or go back to home page.</p>
-            </div>
             <div class="row justify-content-center">
                 <a href="/homepage" class="submit"><button type="button" class="btn btn-danger">Back to Home</button></a>
-                <a href="/user/<%= user.email %>" class="submit"><button type="button" class="btn btn-danger">User Page</button></a>
             </div> 
           
         </div>
