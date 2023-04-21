@@ -39,13 +39,12 @@
     <p style="text-align: center">Quantity: <%= orderinfo.qty %></p>
     <p style="text-align: center">Recipient: <%= orderinfo.buyer %></p>
     <h5 style="text-align: center">Total: <%= orderinfo.total %></h5>
+    <h4 style="text-align: center">Once this order is confirmed, you will have to wait for the order to be approved from the seller. Check your incoming orders tab to see if it is still pending. If it isn't, the seller should have emailed you already. You can leave a review when your order isn't pending anymore.</h4>
 </div>
 
-<form method="POST" action="/orderup/<%= orderinfo._id %>">
 <div style="text-align: center;">
-    <button type="submit" class="btn btn-danger">Buy</button>
+    <a href="/homepage" class="button"><button type="button" class="btn btn-danger">Confirm Order</button></a>
 </div>
-</form>
  
     
 </div>

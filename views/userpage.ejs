@@ -72,8 +72,40 @@
                     <em><%= r.author %></em>
                   </div>
                   <div class="card-body">
+                    <p>Posted <%= r.dt %></p>
                     <p><%= r.msg %></p>
                   </div>
+
+                  <h5>Comments</h5>
+
+                  <% for (let c of r.comments) { %>
+                  <div class="card w-100 mt-3">
+                    <div class="card-header">
+                      <em><%= c.cauthor %></em>
+                    </div>
+                    <div class="card-body">
+                      <p><%= c.cdt %></p>
+                      <p><%= c.cmsg %></p>
+                    </div>
+                  </div>
+                  <% } %>
+
+                  <div class="card w-100 mt-3">
+                    <div class="card-body">
+                      <form method="POST" action="/comment/<%= r._id %>">
+                      <div class="form-group">
+                        <label>Add a comment!</label>
+                      </div>
+                      <div class="form-group">
+                        <textarea class="form-control mb-1" placeholder="Review" name="csentence"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                      </form>
+                    </div>
+                  </div>
+                  
                 </div>
               <% } %>
             
