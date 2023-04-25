@@ -28,7 +28,7 @@ const cookieParser = require('cookie-parser');
 
 const PORT = 8080;
 
-const uri = "mongodb+srv://NoahC22:tfdbfm22@cluster0.iwsdnsj.mongodb.net/test"
+const uri = "mongodb+srv://EveryAdmin:adminpass90@cluster0.iwsdnsj.mongodb.net/test"
 const client = new MongoClient(uri);
 
 (async function ()
