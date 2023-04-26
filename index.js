@@ -28,7 +28,7 @@ const cookieParser = require('cookie-parser');
 
 const PORT = 8080;
 
-const uri = "mongodb+srv://EveryAdmin:adminpass90@cluster0.iwsdnsj.mongodb.net/test"
+const uri = "mongodb+srv://NoahC22:tfdbfm22@cluster0.iwsdnsj.mongodb.net/test"
 const client = new MongoClient(uri);
 
 (async function ()
@@ -109,7 +109,7 @@ app.post('/signupf', async (req, res) => {
     let success = true;
     let listoferr = [];
 
-    let test1 = await client.db("StudentPUB").collection("Users").findOne({ email: `${new_email}`});
+    let test1 = await client.db("StudentPUB").collection("Users").findOne({ email: `${new_email.toLowerCase()}`});
 
     if(test1 != null) {
         success = false;
@@ -135,14 +135,14 @@ app.post('/signupf', async (req, res) => {
         let hash = await bcrypt.hash(new_pass, 10);
 
         let new_p = {
-            email: new_email,
+            email: new_email.toLowerCase(),
             password: hash,
             name: fullname
         }
 
         await client.db("StudentPUB").collection("Users").insertOne(new_p)
 
-        let au = await client.db("StudentPUB").collection("Users").findOne({ email: `${new_email}`})
+        let au = await client.db("StudentPUB").collection("Users").findOne({ email: `${new_email.toLowerCase()}`})
         req.session.user = au;
 
         res.redirect('homepage')
@@ -185,7 +185,7 @@ app.post('/loginp', async (req, res) => {
         get_in = false;
     }
 
-    const info = await client.db("StudentPUB").collection("Users").findOne({ email: `${loginu}`})
+    const info = await client.db("StudentPUB").collection("Users").findOne({ email: `${loginu.toLowerCase()}`})
     if(info == null) {
         get_in = false
     }
@@ -194,7 +194,7 @@ app.post('/loginp', async (req, res) => {
         let compare = await bcrypt.compare(loginp, info.password);
 
         if(compare == true) {
-            const lguser = await client.db("StudentPUB").collection("Users").findOne({ email: `${loginu}`})
+            const lguser = await client.db("StudentPUB").collection("Users").findOne({ email: `${loginu.toLowerCase()}`})
             req.session.user = lguser
             res.redirect('homepage')
         } else {
@@ -639,6 +639,9 @@ app.get('/history', async (req, res) => {
     }
 })
 
+//GET ROUTE for placing order
+//this is for viewing orders that you yourself have placed and are pending
+//it searches those orders with that criteria and prints them out
 app.get('/placedorders', async (req, res) => {
     let x = req.session.user
     if (x == undefined) {
@@ -655,6 +658,9 @@ app.get('/placedorders', async (req, res) => {
     }
 })
 
+//GET ROUTE for cancelling order
+//Gets the id of the order and changes the status to canceled
+//this is in case you want to get rid of an order
 app.get('/cancelorder/:ind', async (req, res) => {
     let x = req.session.user
     if(x==undefined) {
@@ -670,6 +676,9 @@ app.get('/cancelorder/:ind', async (req, res) => {
     }
 })
 
+//GET ROUTE for incoming orders
+//Gets the orders that are pending and that are being bought from you
+//prints them all out
 app.get('/incorders', async (req, res) => {
     let x = req.session.user
     if(x == undefined) {
@@ -687,6 +696,9 @@ app.get('/incorders', async (req, res) => {
     }
 })
 
+//GET ROUTE For declining an order
+//gets the id of the order and changes the status to declined
+//this is in case you want to decline an incoming order from somebody
 app.get('/decline/:ind', async (req, res) => {
     let x = req.session.user
     if(x==undefined) {
