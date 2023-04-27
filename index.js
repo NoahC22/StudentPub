@@ -1,7 +1,5 @@
 const express = require('express');
-
 const fs = require('fs')
-
 const { name } = require('ejs');
 const bodyParser = require('body-parser')
 const { MongoClient, ObjectId } = require('mongodb');
@@ -28,7 +26,6 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const ImageDataURI = require('image-data-uri');
 
 const PORT = 8080;
 
