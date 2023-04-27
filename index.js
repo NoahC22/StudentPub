@@ -574,7 +574,7 @@ app.get('/orderdelete/:ind', async (req, res) => {
         const iinfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(oinfo.itm_id)})
         if(oinfo.buyer == req.session.user.email) {
             await client.db("StudentPUB").collection("Orders").deleteOne({ _id: new ObjectId(ordid)})
-            res.redirect(`http://localhost:8080/item/${iinfo._id}`)
+            res.redirect(`/item/${iinfo._id}`)
         } else {
             res.redirect('homepage')
         }
