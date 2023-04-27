@@ -22,7 +22,7 @@
             <% if(user.imgpath == null) {%>
                 <img src="https://jesussavesmbchurch.org/wp-content/themes/grace-church/images/generic-profile.jpg" class="mx-auto d-block">
                 <% } else { %>
-                <img src="http://localhost:8080/<%= user.imgpath %>" class="d-block w-25 h-25 m-auto">
+                <img src="<%= user.imgpath %>" class="d-block w-25 h-25 m-auto">
             <% } %>
 
             <div class="text-center">

@@ -33,7 +33,7 @@
             <% if(userinfo.imgpath == null) {%>
               <img src="https://jesussavesmbchurch.org/wp-content/themes/grace-church/images/generic-profile.jpg" class="mx-auto d-block">
               <% } else { %>
-              <img src="http://localhost:8080/<%= userinfo.imgpath %>" class="d-block w-25 h-25 m-auto">
+              <img src="<%= userinfo.imgpath %>" class="d-block w-25 h-25 m-auto">
             <% } %>
 
             <div class="text-center"><p><%= userinfo.name %></p></div>

@@ -65,7 +65,7 @@
             <% for (let itm of lists) { %>
                 <div class="col-4">
                     <div class="card container-fluid">
-                        <img src="http://localhost:8080/<%= itm.img1 %>" class="card-img-top embed-responsive-item">
+                        <img src="<%= itm.img1 %>" class="card-img-top embed-responsive-item">
                             <div class="card-body">
                                 <h5 class="card-title"><%= itm.name %></h5>
                                 <p class="card-text"><%= itm.description %></p>
@@ -100,7 +100,7 @@
                 for (let item of data) {
                     list.innerHTML += `<div class="col-4">
                     <div class="card container-fluid">
-                        <img src="http://localhost:8080/${item.img1}" class="card-img-top embed-responsive-item">
+                        <img src="${item.img1}" class="card-img-top embed-responsive-item">
                             <div class="card-body">
                                 <h5 class="card-title">${item.name}</h5>
                                 <p class="card-text">${item.description}</p>
