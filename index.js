@@ -366,7 +366,7 @@ app.get('/delete/:ind', async (req, res) => {
         const cinfo = await client.db("StudentPUB").collection("Listings").findOne({ _id: new ObjectId(itmid)})
         if(cinfo.user_email == req.session.user.email) {
             await client.db("StudentPUB").collection("Listings").deleteOne({ _id: new ObjectId(itmid)})
-            res.redirect(`http://localhost:8080/view_items/${req.session.user.email}`)
+            res.redirect(`/view_items/${req.session.user.email}`)
         } else {
             res.redirect('homepage')
         }
