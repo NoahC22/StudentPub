@@ -1,4 +1,7 @@
 const express = require('express');
+
+const fs = require('fs')
+
 const { name } = require('ejs');
 const bodyParser = require('body-parser')
 const { MongoClient, ObjectId } = require('mongodb');
@@ -25,6 +28,7 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const ImageDataURI = require('image-data-uri');
 
 const PORT = 8080;
 
@@ -253,8 +257,13 @@ app.post('/userprf', upload.single("pfp"), async (req, res) => {
         pass = false;
     }
     if(pass == true) {
+
+        const bufferi = fs.readFileSync(req.file.path)
+        let i = bufferi.toString('base64')
+        let i2 = `data:${req.file.mimetype};base64,${i}`
+
         let ch = { email: req.session.user.email}
-        let new_val = { $set: {imgpath: req.file.path }}
+        let new_val = { $set: {imgpath: i2 }}
         await client.db("StudentPUB").collection("Users").updateOne(ch, new_val)
         res.redirect(`user/${req.session.user.email}`)
     } else {
@@ -435,9 +444,21 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
         })
     } else {
 
-        let im1 = req.files[0].path
-        let im2 = req.files[1].path
-        let im3 = req.files[2].path
+        const buffer1 = fs.readFileSync(req.files[0].path)
+        let i1 = buffer1.toString('base64')
+        let im1 = `data:${req.files[0].mimetype};base64,${i1}`
+
+        const buffer2 = fs.readFileSync(req.files[1].path);
+        let i2 = buffer2.toString('base64')
+        let im2 = `data:${req.files[1].mimetype};base64,${i2}`
+
+        const buffer3 = fs.readFileSync(req.files[2].path)
+        let i3 = buffer3.toString('base64')
+        let im3 = `data:${req.files[2].mimetype};base64,${i3}`
+
+        //let im1 = req.files[0].path
+        //let im2 = req.files[1].path
+        //let im3 = req.files[2].path
 
         let itmqty = parseInt(req.body.itmqty)
         let itmp = parseFloat(req.body.itmp)
