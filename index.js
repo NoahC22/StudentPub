@@ -281,9 +281,10 @@ app.post('/review/:name', async (req, res) => {
     } else {
 
         let date = new Date()
-        let day = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
-        let time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        let day =  (date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear()
+        let time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
         let dates = day + ' ' + time
+        console.log(dates)
 
         let newi = {
             msg: sent,
@@ -310,8 +311,8 @@ app.post('/comment/:id', async (req, res) => {
     } else {
 
         let date = new Date()
-        let day = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
-        let time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        let day =  (date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear()
+        let time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
         let dates = day + ' ' + time
 
         let newi = {

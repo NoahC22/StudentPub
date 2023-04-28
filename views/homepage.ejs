@@ -65,7 +65,7 @@
             <% for (let itm of lists) { %>
                 <div class="col-4">
                     <div class="card container-fluid">
-                        <img src="<%= itm.img1 %>" class="card-img-top embed-responsive-item">
+                        <img src="<%= itm.img1 %>" class="card-img-top embed-responsive-item mx-auto d-block" style="width: 100%; height: 25vw; object-fit: cover;">
                             <div class="card-body">
                                 <h5 class="card-title"><%= itm.name %></h5>
                                 <p class="card-text"><%= itm.description %></p>
