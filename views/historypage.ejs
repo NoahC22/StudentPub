@@ -16,6 +16,7 @@
     </div>
 
     <h4>List Of Orders That You Have Made and Their Statuses</h4>
+    <h4>You Can Also Leave a Review by Clicking Their Name Which Leads to Their User Page</h4>
 
     <div class="row border-bottom">
         <div class="col-2">
@@ -47,7 +48,7 @@
     <% if(o.status != "Pending") { %>
     <div class="row">
         <div class="col-2" style="white-space: normal; word-wrap: break-word;">
-            <%= o.itmholder %>
+            <a href="/user/<%= o.itmholder %>"><%= o.itmholder %></a>
         </div>
 
         <div class="col-2" style="white-space: normal; word-wrap: break-word;">
