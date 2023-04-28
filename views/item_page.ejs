@@ -13,7 +13,7 @@
 <div class="container">
 
 <div class="pb-2 mt-4 mb-2 border-bottom">
-  <a href="/homepage" class="button"><button type="button" class="btn btn-danger">Back</button></a>
+  <a href="/homepage" class="button"><button type="button" class="btn btn-danger" id="back">Back</button></a>
 </div>
 
 <div class="row">
@@ -42,7 +42,7 @@
         </div>
 
         <div style="text-align:center">
-            <a href="/user/<%= item.user_email %>"><%= item.user_email %></a>
+            <a href="/user/<%= item.user_email %>" id="item-user-email"><%= item.user_email %></a>
         </div>
 	</div>
 
@@ -54,9 +54,9 @@
         <% if (showuser) {%>
         <div>How Many To Buy:</div>
         <div class="form-outline" style="width: 22rem;">
-          <input min="1" max="<%= item.qty %>" type="number" id="typeNumber" class="form-control" name="qtyctrl"/>
+          <input min="1" max="<%= item.qty %>" type="number" id="typeNumber" class="form-control" name="qtyctrl" id="qty-num"/>
         </div>      
-        <button type="submit" class="btn btn-danger">Buy</button>
+        <button type="submit" class="btn btn-danger" id="buy-id">Buy</button>
         <% } %>
     </form>
 	</div>

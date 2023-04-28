@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="container-fluid mt-2">
+    <div class="container-fluid mt-2" id="top-text">
         <% if (locals.user) { %>
             Welcome, <%= user.name %>!
         <% } else { %>
@@ -29,29 +29,29 @@
                 <div class="row">
                     <% if (locals.user) { %>
                         <div class="col-2">
-                            <a href="/user/<%= user.email %>" class="button"><button type="button" class="btn btn-danger">My User Page</button></a>
+                            <a href="/user/<%= user.email %>" class="button"><button type="button" class="btn btn-danger" id="my-user-button">My User Page</button></a>
                         </div>
                         <div class="col-2">
-                            <a href="/view_items/<%= user.email %>" class="button"><button type="button" class="btn btn-danger">My Entries</button></a>
+                            <a href="/view_items/<%= user.email %>" class="button"><button type="button" class="btn btn-danger" id="my-entries">My Entries</button></a>
                         </div>
                         <div class="col-2">
-                            <a href="/placedorders" class="button"><button type="button" class="btn btn-danger">Orders Placed</button></a>
+                            <a href="/placedorders" class="button"><button type="button" class="btn btn-danger" id="placed-order-button">Orders Placed</button></a>
                         </div>
                         <div class="col-2">
-                            <a href="/incorders" class="button"><button type="button" class="btn btn-danger">Incoming Orders</button></a>
+                            <a href="/incorders" class="button"><button type="button" class="btn btn-danger" id="incoming-orders">Incoming Orders</button></a>
                         </div>
                         <div class="col-2">
-                            <a href="/history" class="button"><button type="button" class="btn btn-danger">Order History</button></a>
+                            <a href="/history" class="button"><button type="button" class="btn btn-danger" id="my-history">Order History</button></a>
                         </div>
                         <div class="col-2">
-                            <a href="/logout" class="button"><button type="button" class="btn btn-danger">Sign Out</button></a>
+                            <a href="/logout" class="button"><button type="button" class="btn btn-danger" id="sign-out">Sign Out</button></a>
                         </div>
                     <% } else { %>
                         <div class="col-2">
-                            <a href="/login" class="button"><button type="button" class="btn btn-danger">Sign In</button></a>
+                            <a href="/login" class="button"><button type="button" class="btn btn-danger" id="login-button-home">Sign In</button></a>
                         </div>
                         <div class="col-2">
-                            <a href="/signup" class="button"><button type="button" class="btn btn-danger">Sign Up</button></a>
+                            <a href="/signup" class="button"><button type="button" class="btn btn-danger" id="signup-button-home">Sign Up</button></a>
                         </div>
                     <% } %>
                 </div>
@@ -67,11 +67,11 @@
                     <div class="card container-fluid">
                         <img src="<%= itm.img1 %>" class="card-img-top embed-responsive-item mx-auto d-block" style="width: 100%; height: 25vw; object-fit: cover;">
                             <div class="card-body">
-                                <h5 class="card-title"><%= itm.name %></h5>
+                                <h5 class="card-title" id="name-of-item-home"><%= itm.name %></h5>
                                 <p class="card-text"><%= itm.description %></p>
                                 <h6><%= itm.condition %></h6>
                                 <p class="card-text">$<%= itm.price %></p>
-                                <a href="/item/<%= itm._id %>" class="btn btn-danger">Select</a>
+                                <a href="/item/<%= itm._id %>" class="btn btn-danger" id="select-id">Select</a>
                             </div>
                     </div>
                 </div>
