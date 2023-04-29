@@ -742,4 +742,3 @@ app.all('*', async (req, res) => {
 
 
 app.listen(PORT, () => console.log(`server is listening on port ${PORT}`));
-module.exports = app;
