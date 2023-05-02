@@ -725,11 +725,31 @@ app.get('/decline/:ind', async (req, res) => {
     } else {
  
         const ind = req.params["ind"]
-        let ch = { _id: new ObjectId(ind)}
-        let new_val = { $set: {status: "Declined" }}
-        await client.db("StudentPUB").collection("Orders").updateOne(ch, new_val)
+        let info = await client.db("StudentPUB").collection("Orders").findOne({ _id: new ObjectId(ind)})
 
-        res.redirect('/incorders')
+        res.render('declineorder', {
+            oinfo: info
+        })
+    }
+})
+
+//POST ROUTE for declining order
+//gets the text from the textbox and checks if its blank
+//if it is, just put declined and no reason specified
+//if its not, put the reason why also
+app.post('/dec/:ind', async (req, res) => {
+    let text = String(req.body.reasondecl)
+    const ind = req.params["ind"]
+    if(text == "") {
+        let ch = { _id: new ObjectId(ind)}
+        let new_val = { $set: {status: "Declined. No Reason Specified" }}
+        await client.db("StudentPUB").collection("Orders").updateOne(ch, new_val)
+        res.redirect('/homepage')
+    } else {
+        let ch = { _id: new ObjectId(ind)}
+        let new_val = { $set: {status: "Declined. " + text }}
+        await client.db("StudentPUB").collection("Orders").updateOne(ch, new_val)
+        res.redirect('/homepage')
     }
 })
 
