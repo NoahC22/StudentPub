@@ -78,9 +78,15 @@
             <%= cat.qty %>
         </div>
 
+        <% if(cat.az == true) { %>
         <div class="col-2">
-            $ <%= cat.price %>
+            $<%= cat.price %>0
         </div>
+        <% } else { %>
+            <div class="col-2">
+                $<%= cat.price %>
+            </div>
+        <% } %>
 
         <div class="col-2">
             <%= cat.description %>
