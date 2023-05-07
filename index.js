@@ -65,6 +65,7 @@ app.get('/homepage', async (req, res) => {
 	}
 	else {
         let submissions = await client.db("StudentPUB").collection("Listings").find({}).toArray();
+        submissions = submissions.reverse()
 		res.render('homepage', {
 			user: x,
             lists: submissions
@@ -81,6 +82,7 @@ app.post('/home_search', async (req, res) => {
     let x = req.body.search
     x = x.toLowerCase()
     let info = await client.db("StudentPUB").collection("Listings").find({ dname: {$regex: x}}).toArray();
+    info = info.reverse()
     res.json(info)
 })
 
