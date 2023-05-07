@@ -47,10 +47,8 @@
                             <a href="/logout" class="button"><button type="button" class="btn btn-danger">Sign Out</button></a>
                         </div>
                     <% } else { %>
-                        <div class="col-2">
+                        <div style="text-align: center; display: inline-block;">
                             <a href="/login" class="button"><button type="button" class="btn btn-danger">Sign In</button></a>
-                        </div>
-                        <div class="col-2">
                             <a href="/signup" class="button"><button type="button" class="btn btn-danger">Sign Up</button></a>
                         </div>
                     <% } %>
@@ -70,7 +68,11 @@
                                 <h5 class="card-title"><%= itm.name %></h5>
                                 <p class="card-text"><%= itm.description %></p>
                                 <h6><%= itm.condition %></h6>
-                                <p class="card-text">$<%= itm.price %></p>
+                                <% if(itm.az == true) { %>
+                                    <p class="card-text">$<%= itm.price %>0</p>
+                                <% } else { %>
+                                    <p class="card-text">$<%= itm.price %></p>
+                                <% } %>
                                 <a href="/item/<%= itm._id %>" class="btn btn-danger">Select</a>
                             </div>
                     </div>
@@ -97,7 +99,13 @@
                 })
                 data = await result.json();
                 clear()
+                let ip = null;
                 for (let item of data) {
+                    if(item.az == true) {
+                        ip = `<p class="card-text">$${item.price}0</p>`
+                    } else {
+                        ip = `<p class="card-text">$${item.price}</p>`
+                    }
                     list.innerHTML += `<div class="col-4">
                     <div class="card container-fluid">
                         <img src="${item.img1}" class="card-img-top embed-responsive-item">
@@ -105,7 +113,7 @@
                                 <h5 class="card-title">${item.name}</h5>
                                 <p class="card-text">${item.description}</p>
                                 <h6>${item.condition}</h6>
-                                <p class="card-text">$${item.price}</p>
+                                ${ip}
                                 <a href="/item/${item._id}" class="btn btn-danger">Select</a>
                             </div>
                     </div>

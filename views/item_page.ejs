@@ -49,7 +49,11 @@
 	<div class="col-4">
     <form method="POST" action="/orderitem/<%= item._id %>">
         <h1><%= item.name %></h1>
-		    <div>Price: $ <%= item.price %></div>
+        <% if(item.az == true) { %>
+          <div>Price: $<%= item.price %>0</div>
+        <% } else { %>
+          <div>Price: $<%= item.price %></div>
+        <% } %>
 		    <div>Stock: <%= item.qty %></div>
         <% if (showuser) {%>
         <div>How Many To Buy:</div>

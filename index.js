@@ -117,7 +117,7 @@ app.post('/signupf', async (req, res) => {
         listoferr.push("Account already exists.")
     }
 
-    if(new_pass.length < 4) {
+    if(new_pass.length < 6) {
         success = false;
         listoferr.push("Password is too short.")
     }
@@ -424,7 +424,7 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
 
     if((/^[0-9]+.[0-9][0-9]/).test(req.body.itmp) == false) {
         addin = false;
-        adderrors.push("Price is not a proper float.")
+        adderrors.push("Price is not a proper decimal value. Example: 20.00 and 29.99 are valid")
     }
 
     if(itmname == "" || itmdesc == "" || itmcond == "") {
@@ -438,6 +438,8 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
             iname: itmname,
             idesc: itmdesc,
             icond: itmcond,
+            ip: req.body.itmp,
+            iq: req.body.itmqty,
             user: x
         })
     } else {
@@ -454,12 +456,17 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
         let i3 = buffer3.toString('base64')
         let im3 = `data:${req.files[2].mimetype};base64,${i3}`
 
-        //let im1 = req.files[0].path
-        //let im2 = req.files[1].path
-        //let im3 = req.files[2].path
-
         let itmqty = parseInt(req.body.itmqty)
         let itmp = parseFloat(req.body.itmp)
+
+        let strprice = String(itmp)
+        let itmdecimal = strprice.substring(strprice.indexOf(".")+1, strprice.length)
+        let aoz = false
+        if(itmdecimal.length == 1) {
+            aoz = true
+        }else {
+            aoz = false
+        }
 
         let newi = {
             user_email: req.session.user.email,
@@ -471,7 +478,8 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
             price: itmp,
             img1: im1,
             img2: im2,
-            img3: im3
+            img3: im3,
+            az: aoz
         }
     
         await client.db("StudentPUB").collection("Listings").insertOne(newi);
@@ -744,12 +752,12 @@ app.post('/dec/:ind', async (req, res) => {
         let ch = { _id: new ObjectId(ind)}
         let new_val = { $set: {status: "Declined. No Reason Specified" }}
         await client.db("StudentPUB").collection("Orders").updateOne(ch, new_val)
-        res.redirect('/homepage')
+        res.redirect('/incorders')
     } else {
         let ch = { _id: new ObjectId(ind)}
         let new_val = { $set: {status: "Declined. " + text }}
         await client.db("StudentPUB").collection("Orders").updateOne(ch, new_val)
-        res.redirect('/homepage')
+        res.redirect('/incorders')
     }
 })
 
