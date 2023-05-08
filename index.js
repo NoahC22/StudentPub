@@ -469,6 +469,9 @@ app.post('/addtodb', upload.array('itmimg', 3), async (req, res) => {
         }else {
             aoz = false
         }
+	if(strprice.length == 1) {
+	aoz = false;
+	}
 
         let newi = {
             user_email: req.session.user.email,
